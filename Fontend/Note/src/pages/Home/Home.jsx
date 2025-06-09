@@ -21,10 +21,10 @@ const Home = () => {
     <div className='container mx-auto'>
       <div className='grid grid-cols-3 gap-4 mt-8'>
       <NoteCard 
-      title="Họp lúc 7 giờ sáng mai"
-      date="05/01/2000"
-      content="họp mọi lúc mọi nơi, không bỏ lỡ 1 người nào hết" 
-      tags="#Meeting"
+      title="Hẹn hò với người đẹp Thảo Trân"
+      date="07/06/2025"
+      content="Đẹp như 1 nàng tiên cá " 
+      tags="#Miss"
       isPinned={true}
       onEdit={()=>{}}
       onDelete={()=>{}}
