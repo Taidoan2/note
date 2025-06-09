@@ -3,12 +3,17 @@ import Navbar from '../../components/Navbar/Navbar'
 import { Link } from 'react-router-dom'
 import PasswordInput from '../../components/Input/PasswordInput'
 import { validateEmail } from "../../utils/helper.js";
+import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,13 +27,15 @@ const Login = () => {
       setError("Please enter the password");
       return;
     }
+    navigate("/dashboard");
 
     setError("")
+ 
     
   };
 
   return ( <>
-    <Navbar/>
+    {/* <Navbar/> */}
     
 
 
@@ -52,7 +59,7 @@ const Login = () => {
 
           {error && <p className="text-red-500 text-xs pb-1">{error}</p>}
 
-          <button type='submit' className='btn-primary'>Login</button>
+          <button type='submit' className='btn-primary' onClick={handleLogin} >Login</button>
 
           <p className='text-sm text-center mt-4'>
             Not registered yet? {" "}
