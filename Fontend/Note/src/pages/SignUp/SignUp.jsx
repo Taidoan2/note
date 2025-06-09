@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import PasswordInput from "../../components/Input/PasswordInput";
 import { validateEmail } from "../../utils/helper";
 
+
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -70,7 +71,7 @@ const SignUp = () => {
             <p className="text-sm text-center mt-4">
               Already have an account?{" "}
               <Link
-                to="/Login"
+                to="/"
                 className="font-medium text-[#2B85FF] underline"
               >
                 Login
