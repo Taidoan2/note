@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import PasswordInput from '../../components/Input/PasswordInput'
 import { validateEmail } from "../../utils/helper.js";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from '../../utils/axiosInstance.js';
 
 
 const Login = () => {
@@ -27,9 +28,28 @@ const Login = () => {
       setError("Please enter the password");
       return;
     }
-    navigate("/dashboard");
+    // navigate("/dashboard");
 
     setError("")
+
+    // Login API Call
+    try {
+      const response = await axiosInstance.post("/login", {
+          email: email,
+          password: password,
+        });
+      /* handle successfull login response */
+      if (response.data && response.data.accessToken) {
+        localStorage.setItem("token", response.data.accessToken)
+        navigate("/dashboard")
+      }
+    } catch (error) {
+      if(error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Có lỗi xảy ra trong quá trình đăng nhập. Bạn vui lòng thử lại")
+      }
+    }
  
     
   };
