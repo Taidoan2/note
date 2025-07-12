@@ -7,6 +7,7 @@ import Modal from "react-modal";
 
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../utils/axiosInstance'
+import Toast from '../../components/ToastMessage/Toast'
 
 const Home = () => {
 
@@ -16,6 +17,11 @@ const Home = () => {
     data: null
   });
 
+  const [showToastMsg, setShowToastMsg] = useState({
+    isShown: false,
+    message:"",
+    type: "add",
+  });
 
   const [allNotes, setAllNotes] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
@@ -25,6 +31,23 @@ const Home = () => {
   const handleEdit = (noteDetails) => {
     setOpenAddEditModal({ isShown: true, data: noteDetails, type: "edit"});
   };
+
+  const showToastMessage = (message, type) => {
+    setShowToastMsg({
+      isShown: true,
+      message,
+      type,
+    });
+  }
+
+  const handleCloseToast = () => {
+    setShowToastMsg({
+      isShown: false,
+      message:""
+    });
+  }
+
+  
 
   // get user info
   const getUserInfo = async () => {
@@ -55,7 +78,27 @@ const Home = () => {
     }
   }
 
+  // Delete Note
+  const deleteNote = async (data) => {
+    const noteId = data._id
+    try {
+      const response = await axiosInstance.delete("/delete-note/" + noteId);
 
+      if (response.data && !response.data.error) {
+        showToastMessage("Xóa note thành công", 'delete')
+        getAllNotes()
+    
+      }
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.data && 
+        error.response.data.message
+      ) {
+        console.log("Đã xảy ra lỗi. Vui lòng thử lại.")
+      }
+    }
+  }
 
 
   useEffect(() => {
@@ -80,7 +123,7 @@ const Home = () => {
           tags={item.tags}
           isPinned={item.isPinned}
           onEdit={()=> handleEdit(item)}
-          onDelete={()=>{}}
+          onDelete={()=>deleteNote(item)}
           onPinNote={()=>{}}
       />
         ))}
@@ -114,8 +157,15 @@ const Home = () => {
       setOpenAddEditModal({isShown:false, type:"add", data:null});
     }}
     getAllNotes = {getAllNotes}
+    showToastMessage={showToastMessage}
     />
     </Modal>
+    <Toast
+    isShown={showToastMsg.isShown}
+    message={showToastMsg.message}
+    type={showToastMsg.type}
+    onClose={handleCloseToast}
+    />
    </>
   )
 }
